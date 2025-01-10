@@ -25,6 +25,7 @@ userFields = {
     'name':fields.String,
     'email':fields.String,
 }
+
 class Users(Resource):
     @marshal_with(userFields)
     def get(self): # get method
@@ -40,10 +41,11 @@ class Users(Resource):
         users = UserModel.query.all()
         return users, 201
 
+# A User can be edited, deleted, and retrieved
 class User(Resource):
     @marshal_with(userFields)
     def get(self, id):
-       user = UserModel.query.filter_by(id=id).first() # retrieve a specific user form the database
+       user = UserModel.query.filter_by(id=id).first() # retrieve a specific user from the database
        if not user:
         abort(404, "User not found")
         return user
@@ -51,7 +53,7 @@ class User(Resource):
     @marshal_with(userFields)
     def patch(self, id):
         args = user_args.parse_args()
-        user = UserModel.query.filter_by(id=id).first() # retrieve a specific user form the database
+        user = UserModel.query.filter_by(id=id).first() # retrieve a specific user from the database
         if not user:
             abort(404, "User not found")
         user.name = args["name"]
@@ -61,7 +63,7 @@ class User(Resource):
 
     @marshal_with(userFields)
     def delete(self, id):
-        user = UserModel.query.filter_by(id=id).first() # retrieve a specific user form the database
+        user = UserModel.query.filter_by(id=id).first() # retrieve a specific user from the database
         if not user:
             abort(404, "User not found")
         db.session.delete(user)
